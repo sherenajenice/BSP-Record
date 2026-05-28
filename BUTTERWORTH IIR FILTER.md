@@ -21,55 +21,71 @@ To design a digital Butterworth filter using bilinear method satisfying the cons
 clear all
 clc
 
-AP=0.707;					% Gain at passband edge frequency
-AS=0.08;					% Gain at stop band edge frequency
-PEF_D=0.2*pi;					% Passband edge digital frequency
-SEF_D=0.4*pi;					% Stop band edge digital frequency
-T=1;						% Sampling time
-alpha_P=-20*log10(AP)				% Passband attenuation in dB
-alpha_S=-20*log10(AS)				% Stop band attenuation in dB
+AP = 0.707;                 % Gain at passband edge frequency
+AS = 0.08;                  % Gain at stopband edge frequency
 
-PEF_A=(2/T)*tan((PEF_D/2)
-SEF_A=(2/T)*tan((SEF_D/2)
+PEF_D = 0.2*pi;             % Passband edge digital frequency
+SEF_D = 0.4*pi;             % Stopband edge digital frequency
 
-[N,CF]=buttord(PEF_A,SEF_A,alpha_P,alpha_S,'s')        % Order and cutoff frequency
+T = 1;                      % Sampling time
 
-[Bn,An]=butter(N,,1,'s');				% Normalized Transfer Function
-display('Normalized Transfer Function is,')
-Hsn=tf(Bn,An)
+% Passband and stopband attenuation in dB
+alpha_P = -20*log10(AP)
+alpha_S = -20*log10(AS)
 
-[B,A]=butter(N,CF,'s');				% Unnormalized Transfer Function
-display('Unnormalised Transfer Function is,')
-Hs=tf(B,A)
+% Prewarping of digital frequencies to analog frequencies
+PEF_A = (2/T)*tan(PEF_D/2)
+SEF_A = (2/T)*tan(SEF_D/2)
 
-[num,den]=bilinear(B,A,1/T);			
+% Order and cutoff frequency calculation
+[N, CF] = buttord(PEF_A, SEF_A, alpha_P, alpha_S, 's')
+
+% Normalized Butterworth Transfer Function
+[Bn, An] = butter(N, 1, 's');
+disp('Normalized Transfer Function is:')
+Hsn = tf(Bn, An)
+
+% Unnormalized Butterworth Transfer Function
+[B, A] = butter(N, CF, 's');
+disp('Unnormalized Transfer Function is:')
+Hs = tf(B, A)
+
+% Bilinear Transformation for Digital Filter
+[num, den] = bilinear(B, A, 1/T);
+
 % Digital Transfer Function
-display('Digital Transfer Function is,')
-Hz=tf(num,den,T)
+disp('Digital Transfer Function is:')
+Hz = tf(num, den, T)
 
-w=0:pi/16:pi;
-display('Frequency Response is,')
-Hw=freqz(num,den,w)				
-% Frequency response
-display('Magnitude Response is,')
-Hw_mag=abs(Hw)				
-% Magnitude response
-plot(w/pi,Hw_mag,'k');grid;
+% Frequency Response
+w = 0:pi/16:pi;
 
-title('Magnitude Response of Butterworth 3rd order Lowpass Filter','fontweight','b');
-xlabel('Normalised frequency, \omega/\pi','fontweight','b');
-ylabel('Magnitude','fontweight','b');
+disp('Frequency Response is:')
+Hw = freqz(num, den, w);
+
+% Magnitude Response
+disp('Magnitude Response is:')
+Hw_mag = abs(Hw);
+
+% Plot Magnitude Response
+plot(w/pi, Hw_mag, 'k');
+grid on;
+
+title('Magnitude Response of Butterworth Lowpass Filter', ...
+    'fontweight', 'bold');
+
+xlabel('Normalized Frequency, \omega/\pi', ...
+    'fontweight', 'bold');
+
+ylabel('Magnitude', ...
+    'fontweight', 'bold');
 
 
 
 
 ## OUTPUT
 
-
- 
-
-
-
+<img width="918" height="472" alt="image" src="https://github.com/user-attachments/assets/a5fb3293-26f4-4ff8-9fa5-ff3ff7701906" />
 
 
 
