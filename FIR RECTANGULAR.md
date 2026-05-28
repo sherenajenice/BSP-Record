@@ -50,5 +50,7 @@ ylabel (‘Magnitude’, ‘font weight’, ‘b’);
 
 ## OUTPUT 
 
+<img width="872" height="472" alt="image" src="https://github.com/user-attachments/assets/cdcd286b-b874-4d49-adc3-5ec5ed66ad01" />
+
 ## RESULT
 Thus the FIR filter with the given specifications was designed using rectangular windowing technique.
